@@ -20,18 +20,9 @@ export class Patients extends Component {
 
   async componentDidMount() {
     this._getPatients();
-    this._storeData();
+    console.tron.log(await AsyncStorage.getItem('@user'))
   }
 
-  _storeData = async () => {
-    const user = this.props.navigation.getParam("user");
-
-    try {
-      await AsyncStorage.setItem("@user", user);
-    } catch (err) {
-      console.log(err);
-    }
-  };
   _getPatients = () => {
     Realm.open({
       schema: [patientSchema],
@@ -49,10 +40,9 @@ export class Patients extends Component {
 
   _deletePatient = patient => {
     Realm.open({
-      schema: [patientSchema],
-      deleteRealmIfMigrationNeeded: true
+      schema: [patientSchema]
     }).then(realm => {
-      realm.write(() => {
+      realm.write((realm) => {
         realm.create(
           {
             id: patient,
@@ -62,17 +52,15 @@ export class Patients extends Component {
         );
       });
 
-      realm.close().then(() => {
-        this._getPatients();
-      });
-    });
+      console.tron.log(realm)
+    })
   };
 
   renderItem = ({ item }) => {
     return (
       <View style={styles.list}>
         <View>
-          {item.enabled && <Text>TRUE</Text>}
+          {item.enabled && <Text style={{ color: "#f00" }}>TRUE</Text>}
           <View style={styles.patient}>
             <Icon
               style={styles.icon}

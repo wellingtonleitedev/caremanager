@@ -19,7 +19,8 @@ export class Create extends Component {
     const { patient, hospital } = this.state;
 
     Realm.open({
-      schema: [patientSchema]
+      schema: [patientSchema],
+      deleteRealmIfMigrationNeeded: true
     })
       .then(realm => {
         realm.write(() => {
@@ -28,19 +29,13 @@ export class Create extends Component {
             name: patient,
             hospital: hospital
           });
+
+          console.tron.log(realm)
         });
 
-        realm.close().then(() => {
-          navigate("Home", {
-            success: `Paciente, ${patient} cadastrado com sucesso!`
-          });
-        });
-      })
-      .catch(err =>
-        navigate("Home", {
-          error: `Não foi possível cadastrar o paciente, ${patient}!`
-        })
-      );
+        // realm.isInTransaction()
+
+      });
   };
 
   render() {

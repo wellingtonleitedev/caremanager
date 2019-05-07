@@ -5,9 +5,8 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 export class AuthLoading extends Component {
   componentDidMount() {
-    setTimeout(() => {
-      this._verifyStore();
-    }, 5000);
+    console.tron.log(this._verifyStore())
+    this._verifyStore();
   }
 
   _verifyStore = async () => {

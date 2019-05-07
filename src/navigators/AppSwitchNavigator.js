@@ -10,7 +10,7 @@ const AppSwitchNavigator = createAppContainer(
       Home: AppStackNavigator
     },
     {
-      initialRouteName: "Home"
+      initialRouteName: "Auth"
     }
   )
 );

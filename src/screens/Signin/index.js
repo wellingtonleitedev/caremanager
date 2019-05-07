@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { View, TextInput, Button, Image, Text } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage'
 import styles from "./styles";
 import { theme } from "../../styles";
 import { userSchema } from "../../schemas";
@@ -68,7 +69,13 @@ export class Signin extends Component {
       });
     } else {
       if (email == user.email && password == user.password) {
-        navigate("Home", { user: user.name });
+        try {
+          await AsyncStorage.setItem("@user", user.name);
+        } catch (err) {
+          console.log(err);
+        } finally {
+          navigate("Home");
+        }
       } else {
         this.setState({
           error: "Suas credenciais estão invalidas"
@@ -82,32 +89,32 @@ export class Signin extends Component {
     return !loading ? (
       <LoadingView />
     ) : (
-      <View style={styles.container}>
-        <Image
-          style={styles.imageView}
-          source={require("../../../assets/hospital.png")}
-        />
-        {error && (
-          <Text style={{ color: "#f00", textAlign: "center" }}>{error}</Text>
-        )}
-        <TextInput
-          style={styles.input}
-          autoCapitalize="none"
-          onChangeText={email => this.setState({ email })}
-          placeholder="Digite seu usuário"
-        />
-        <TextInput
-          style={styles.input}
-          autoCapitalize="none"
-          onChangeText={password => this.setState({ password })}
-          placeholder="Sua senha"
-        />
-        <Button
-          color={theme.colors.secondary}
-          onPress={this.handleSubmit}
-          title="Entrar"
-        />
-      </View>
-    );
+        <View style={styles.container}>
+          <Image
+            style={styles.imageView}
+            source={require("../../../assets/hospital.png")}
+          />
+          {error && (
+            <Text style={{ color: "#f00", textAlign: "center" }}>{error}</Text>
+          )}
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={email => this.setState({ email })}
+            placeholder="Digite seu usuário"
+          />
+          <TextInput
+            style={styles.input}
+            autoCapitalize="none"
+            onChangeText={password => this.setState({ password })}
+            placeholder="Sua senha"
+          />
+          <Button
+            color={theme.colors.secondary}
+            onPress={this.handleSubmit}
+            title="Entrar"
+          />
+        </View>
+      );
   }
 }
