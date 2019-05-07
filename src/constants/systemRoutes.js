@@ -1,0 +1,8 @@
+export const SYSTEM_ROUTES = {
+  AUTH_STACK_NAVIGATOR: {
+    ROUTE: "AUTH_STACK_NAVIGATOR"
+  },
+  SIGNIN_SCREEN: {
+    ROUTE: "SIGNIN_SCREEN"
+  }
+};
