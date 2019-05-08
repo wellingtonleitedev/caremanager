@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { View, Text, FlatList, SafeAreaView, ScrollView } from "react-native";
-import AsyncStorage from "@react-native-community/async-storage";
 import styles from "./styles";
 import Icon from "react-native-vector-icons/FontAwesome5";
 import ButtonIcon from "../../components/ButtonIcon";
@@ -15,22 +14,48 @@ export class Patients extends Component {
   }
 
   state = {
-    data: []
+    data: [],
+    patient: "",
+    delete: false,
+    close: false,
+    message: ""
   };
 
-  async componentDidMount() {
-    this._getPatients();
-    console.tron.log(await AsyncStorage.getItem('@user'))
+  componentDidMount() {
+    this._openDBPatients();
   }
 
-  _getPatients = () => {
+  _openDBPatients = () => {
     Realm.open({
       schema: [patientSchema],
+      path: "patients.realm",
       deleteRealmIfMigrationNeeded: true
     }).then(realm => {
+      if (this.state.delete && this.state.patientId !== "") {
+        realm.write(() => {
+          realm.create(
+            patientSchema.name,
+            {
+              id: this.state.patientId,
+              enabled: false
+            },
+            true
+          );
+        });
+        this.setState(
+          {
+            patientId: "",
+            delete: false,
+            message: "Paciente excluído!"
+          },
+          () => {
+            this._openDBPatients();
+          }
+        );
+      }
       const patients = realm
         .objects(patientSchema.name)
-        .filtered("enable = true");
+        .filtered("enabled = true");
       this.setState({
         ...this.state,
         data: [...this.state.data, ...patients]
@@ -39,28 +64,21 @@ export class Patients extends Component {
   };
 
   _deletePatient = patient => {
-    Realm.open({
-      schema: [patientSchema]
-    }).then(realm => {
-      realm.write((realm) => {
-        realm.create(
-          {
-            id: patient,
-            enabled: false
-          },
-          true
-        );
-      });
-
-      console.tron.log(realm)
-    })
+    this.setState(
+      {
+        delete: true,
+        patientId: patient
+      },
+      () => {
+        this._openDBPatients();
+      }
+    );
   };
 
   renderItem = ({ item }) => {
     return (
       <View style={styles.list}>
         <View>
-          {item.enabled && <Text style={{ color: "#f00" }}>TRUE</Text>}
           <View style={styles.patient}>
             <Icon
               style={styles.icon}
@@ -96,19 +114,17 @@ export class Patients extends Component {
 
   render() {
     const { navigation } = this.props;
-    const { data } = this.state;
+    const { data, message } = this.state;
     return (
       <SafeAreaView style={styles.safearea}>
-        <View style={styles.header}>
-          <Text style={styles.headerText}>Pacientes</Text>
+        <View style={styles.container}>
+          {message !== "" && <Text style={styles.success}>{message}</Text>}
           {navigation.getParam("success") ? (
-            <Text>{navigation.getParam("success")}</Text>
+            <Text style={styles.success}>{navigation.getParam("success")}</Text>
           ) : null}
           {navigation.getParam("error") ? (
-            <Text>{navigation.getParam("error")}</Text>
+            <Text style={styles.error}>{navigation.getParam("error")}</Text>
           ) : null}
-        </View>
-        <View style={styles.container}>
           {data.length ? (
             <View style={styles.flatListView}>
               <ScrollView>

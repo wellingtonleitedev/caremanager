@@ -1,12 +1,11 @@
-import Reactotron from 'reactotron-react-native'
+import Reactotron from "reactotron-react-native";
 
 if (__DEV__) {
-    const tron = Reactotron
-        .configure({ host: '192.168.15.11' })
-        .useReactNative() // add all built-in react native plugins
-        .connect();
+  const tron = Reactotron.configure({ host: "192.168.15.15" })
+    .useReactNative() // add all built-in react native plugins
+    .connect();
 
-    console.tron = tron;
+  console.tron = tron;
 
-    tron.clear();
+  tron.clear();
 }

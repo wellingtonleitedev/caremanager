@@ -7,27 +7,26 @@ export default StyleSheet.create({
   safearea: {
     flex: 1
   },
-  header: {
-    backgroundColor: theme.colors.secondary,
-    padding: 20,
-    height: 170,
-    width: width
-  },
-  headerText: {
-    color: "#fff",
-    fontSize: 30,
-    fontWeight: "bold"
-  },
   container: {
     alignItems: "center",
     backgroundColor: "#1D2331",
     flex: 1,
     justifyContent: "center",
-    padding: 20
+    paddingVertical: 40,
+    paddingHorizontal: 20
+  },
+  success: {
+    color: theme.colors.success,
+    fontSize: 15
+  },
+  error: {
+    color: theme.colors.error,
+    fontSize: 15
   },
   flatListView: {
     backgroundColor: "#fff",
     borderRadius: 10,
+    marginBottom: 10,
     padding: 20,
     width: width - 40
   },
@@ -75,7 +74,6 @@ export default StyleSheet.create({
     backgroundColor: theme.colors.secondary,
     borderRadius: 100,
     justifyContent: "center",
-    marginTop: 60,
     padding: 10,
     height: 50,
     width: 50

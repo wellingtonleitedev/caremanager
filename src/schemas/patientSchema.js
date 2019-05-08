@@ -4,7 +4,8 @@ export const patientSchema = {
   properties: {
     id: { type: "int" },
     name: { type: "string" },
+    user_id: { type: "int", default: 1 },
     hospital: { type: "string" },
-    enable: { type: "bool", default: true, indexed: true }
+    enabled: { type: "bool", default: true, indexed: true }
   }
 };

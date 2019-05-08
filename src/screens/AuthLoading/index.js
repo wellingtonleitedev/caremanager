@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import { View, Image, ActivityIndicator } from "react-native";
+import { View, Image, ActivityIndicator, StatusBar } from "react-native";
 import styles from "./styles";
 import AsyncStorage from "@react-native-community/async-storage";
+import { theme } from "../../styles";
 
 export class AuthLoading extends Component {
   componentDidMount() {
-    console.tron.log(this._verifyStore())
     this._verifyStore();
   }
 

@@ -25,6 +25,10 @@ export default StyleSheet.create({
     justifyContent: "center",
     padding: 20
   },
+  success: {
+    color: theme.colors.success,
+    fontSize: 15
+  },
   formView: {
     backgroundColor: "#fff",
     borderRadius: 10,
